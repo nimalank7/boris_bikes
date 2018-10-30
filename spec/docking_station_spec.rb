@@ -42,4 +42,14 @@ describe DockingStation do
     end
     expect{ docking_station.dock_bike(Bike.new) }.to raise_exception
   end
+
+  it 'has a capacity of DEFAULT_CAPACITY if no argument is supplied' do
+    docking_station = DockingStation.new
+    expect(docking_station.capacity).to eq(DockingStation::DEFAULT_CAPACITY)
+  end
+
+  it 'has the capacity of the supplied capacity argument' do
+    docking_station = DockingStation.new(10)
+    expect(docking_station.capacity).to eq(10)
+  end
 end
