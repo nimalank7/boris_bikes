@@ -1,5 +1,5 @@
 require 'bike'
-describe "Bike" do
+describe Bike do
   it "can be instantiated" do
     bike = Bike.new
     expect(bike.instance_of? Bike).to eq true

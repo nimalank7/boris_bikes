@@ -1,5 +1,5 @@
 require 'person'
-describe "Person" do
+describe Person do
   it "can be instantiated" do
     person = Person.new
     expect(person.instance_of? Person).to eq true

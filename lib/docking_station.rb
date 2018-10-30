@@ -1,7 +1,8 @@
-class Docking_station
+require 'bike'
+class DockingStation
   def initialize
   end
   def release_bike
-    "Bike released."
+    Bike.new
   end
 end
