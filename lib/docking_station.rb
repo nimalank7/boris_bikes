@@ -6,7 +6,7 @@ class DockingStation
     @bikes = []
   end
   def release_bike
-    Bike.new
+    available? ? get_bike : (raise Exception.new("No bikes"))
   end
   def dock_bike(bike)
     @bikes << bike
@@ -14,6 +14,11 @@ class DockingStation
 
   def available?
     @bikes.empty? ? false : true
+  end
+
+  private
+  def get_bike
+    @bikes.pop
   end
 
 end

@@ -7,6 +7,7 @@ describe DockingStation do
   end
   it "release bike" do
     docking_station = DockingStation.new
+    docking_station.dock_bike(Bike.new)
     expect(docking_station.release_bike.instance_of?(Bike)).to be(true)
   end
   it "bikes" do
@@ -28,5 +29,10 @@ describe DockingStation do
       expect(docking_station.available?).to eq false
       docking_station.dock_bike(bike)
       expect(docking_station.available?).to eq true
+  end
+
+  it 'does not return a bike if there are none available' do
+    docking_station = DockingStation.new
+    expect{ docking_station.release_bike }.to raise_exception
   end
 end
