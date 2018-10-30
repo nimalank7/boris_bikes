@@ -9,7 +9,7 @@ class DockingStation
     available? ? get_bike : (raise Exception.new("No bikes"))
   end
   def dock_bike(bike)
-    @bikes << bike
+    available? ? (raise Exception.new("Dock is full")) : @bikes << bike
   end
 
   def available?
