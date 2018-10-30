@@ -11,4 +11,9 @@ class DockingStation
   def dock_bike(bike)
     @bikes << bike
   end
+
+  def available?
+    @bikes.empty? ? false : true
+  end
+
 end

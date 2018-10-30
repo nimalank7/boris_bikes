@@ -21,4 +21,12 @@ describe DockingStation do
     docking_station.dock_bike(bike)
     expect(docking_station.bikes.include? bike).to eq true
   end
+
+  it "can be queryied to see if a bike is available" do
+      docking_station = DockingStation.new
+      bike = Bike.new
+      expect(docking_station.available?).to eq false
+      docking_station.dock_bike(bike)
+      expect(docking_station.available?).to eq true
+  end
 end
