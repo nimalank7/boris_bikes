@@ -37,7 +37,9 @@ describe DockingStation do
   end
   it 'does not dock a bike if there are no spaces available' do
     docking_station = DockingStation.new
-    20.times { docking_station.dock_bike(Bike.new) }
+    DockingStation::DEFAULT_CAPACITY.times do
+      docking_station.dock_bike(Bike.new)
+    end
     expect{ docking_station.dock_bike(Bike.new) }.to raise_exception
   end
 end
