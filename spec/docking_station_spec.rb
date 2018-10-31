@@ -25,8 +25,8 @@ describe DockingStation do
 
   it "can be queryied to see if a bike is available" do
       docking_station = DockingStation.new
-      bike = Bike.new
       expect(docking_station.available?).to eq false
+      bike = Bike.new
       docking_station.dock_bike(bike)
       expect(docking_station.available?).to eq true
   end
@@ -51,5 +51,18 @@ describe DockingStation do
   it 'has the capacity of the supplied capacity argument' do
     docking_station = DockingStation.new(10)
     expect(docking_station.capacity).to eq(10)
+  end
+  it 'can report a bike broken' do
+    docking_station = DockingStation.new()
+    bike = Bike.new
+    docking_station.report_broken(bike)
+    expect(bike.is_working?).to eq(false)
+  end
+  it "doesn't release broken bikes" do
+    docking_station = DockingStation.new()
+    bike = Bike.new
+    bike.condition = "bad"
+    docking_station.dock_bike(bike)
+    expect(docking_station.is_working?).to eq(false)
   end
 end

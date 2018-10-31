@@ -17,12 +17,22 @@ class DockingStation
   end
 
   def available?
-    !@bikes.empty?
+    !@bikes.empty? && @bikes.select {|bike| bike.is_working?}.any?
+  end
+  def report_broken(bike)
+    bike.condition = "bad"
   end
 
   private
   def get_bike
-    @bikes.pop
+    returned_bike = nil
+    @bikes.each_with_index do |bike, index|
+      if bike.is_working?
+        returned_bike = @bikes.delete_at(index)
+        break
+      end
+    end
+    returned_bike
   end
   def full?
     @bikes.size < DEFAULT_CAPACITY
