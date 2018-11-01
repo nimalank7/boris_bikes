@@ -1,17 +1,19 @@
 require 'docking_station'
 require 'bike'
 describe DockingStation do
-
-  it "release bike" do
+let(:bike) { double(:bike) }
+  it "releases bike" do
+    allow(bike).to receive(:is_working?).and_return(true)
     docking_station = DockingStation.new
-    docking_station.dock_bike(double(:bike))
-    expect(docking_station.release_bike.instance_of?(Bike)).to be(true)
+    docking_station.dock_bike(bike)
+    expect(docking_station.release_bike).to eq(bike)
   end
 
   it "can be queried to see if a bike is available" do
       docking_station = DockingStation.new
       expect(docking_station.available?).to eq false
-      docking_station.dock_bike(double(:bike))
+      allow(bike).to receive(:is_working?).and_return(true)
+      docking_station.dock_bike(bike)
       expect(docking_station.available?).to eq true
   end
 
@@ -22,9 +24,9 @@ describe DockingStation do
   it 'does not dock a bike if there are no spaces available' do
     docking_station = DockingStation.new
     DockingStation::DEFAULT_CAPACITY.times do
-      docking_station.dock_bike(double(:bike))
+      docking_station.dock_bike(bike)
     end
-    expect{ docking_station.dock_bike(double(:bike)) }.to raise_exception
+    expect{ docking_station.dock_bike(bike) }.to raise_exception
   end
 
   it 'has a capacity of DEFAULT_CAPACITY if no argument is supplied' do
@@ -38,13 +40,18 @@ describe DockingStation do
   end
   it 'can report a bike broken' do
     docking_station = DockingStation.new()
-    docking_station.report_broken(double(:bike))
+    allow(bike).to receive(:condition=).and_return("bad")
+    allow(bike).to receive(:report_broken).and_return("bad")
+    allow(bike).to receive(:is_working?).and_return(false)
+    docking_station.report_broken(bike)
     expect(bike.is_working?).to eq(false)
   end
   it "doesn't release broken bikes" do
     docking_station = DockingStation.new()
-    bike.condition = "bad"
-    docking_station.dock_bike(double(:bike))
+    allow(bike).to receive(:available?).and_return(false)
+    allow(bike).to receive(:is_working?).and_return(false)
+    allow(bike).to receive(:condition=).and_return("bad")
+    docking_station.dock_bike(bike)
     expect{ docking_station.release_bike }.to raise_exception
   end
 end
