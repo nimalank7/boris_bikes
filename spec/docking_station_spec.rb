@@ -1,33 +1,17 @@
 require 'docking_station'
 require 'bike'
 describe DockingStation do
-  it "can be instantiated" do
-    docking_station = DockingStation.new
-    expect(docking_station.instance_of? DockingStation).to eq true
-  end
+
   it "release bike" do
     docking_station = DockingStation.new
-    docking_station.dock_bike(Bike.new)
+    docking_station.dock_bike(double(:bike))
     expect(docking_station.release_bike.instance_of?(Bike)).to be(true)
-  end
-  it "bikes" do
-    docking_station = DockingStation.new
-    bike = Bike.new
-    docking_station.dock_bike(bike)
-    expect(docking_station.bikes). to eq [bike]
-  end
-  it "dock bike" do
-    docking_station = DockingStation.new
-    bike = Bike.new
-    docking_station.dock_bike(bike)
-    expect(docking_station.bikes.include? bike).to eq true
   end
 
   it "can be queried to see if a bike is available" do
       docking_station = DockingStation.new
       expect(docking_station.available?).to eq false
-      bike = Bike.new
-      docking_station.dock_bike(bike)
+      docking_station.dock_bike(double(:bike))
       expect(docking_station.available?).to eq true
   end
 
@@ -38,9 +22,9 @@ describe DockingStation do
   it 'does not dock a bike if there are no spaces available' do
     docking_station = DockingStation.new
     DockingStation::DEFAULT_CAPACITY.times do
-      docking_station.dock_bike(Bike.new)
+      docking_station.dock_bike(double(:bike))
     end
-    expect{ docking_station.dock_bike(Bike.new) }.to raise_exception
+    expect{ docking_station.dock_bike(double(:bike)) }.to raise_exception
   end
 
   it 'has a capacity of DEFAULT_CAPACITY if no argument is supplied' do
@@ -54,15 +38,13 @@ describe DockingStation do
   end
   it 'can report a bike broken' do
     docking_station = DockingStation.new()
-    bike = Bike.new
-    docking_station.report_broken(bike)
+    docking_station.report_broken(double(:bike))
     expect(bike.is_working?).to eq(false)
   end
   it "doesn't release broken bikes" do
     docking_station = DockingStation.new()
-    bike = Bike.new
     bike.condition = "bad"
-    docking_station.dock_bike(bike)
+    docking_station.dock_bike(double(:bike))
     expect{ docking_station.release_bike }.to raise_exception
   end
 end
