@@ -23,7 +23,7 @@ describe DockingStation do
     expect(docking_station.bikes.include? bike).to eq true
   end
 
-  it "can be queryied to see if a bike is available" do
+  it "can be queried to see if a bike is available" do
       docking_station = DockingStation.new
       expect(docking_station.available?).to eq false
       bike = Bike.new
@@ -63,6 +63,6 @@ describe DockingStation do
     bike = Bike.new
     bike.condition = "bad"
     docking_station.dock_bike(bike)
-    expect(docking_station.is_working?).to eq(false)
+    expect{ docking_station.release_bike }.to raise_exception
   end
 end

@@ -1,7 +1,8 @@
-require 'bike'
+require_relative './bike.rb'
 class DockingStation
   attr_accessor :bikes
   attr_reader :capacity
+  attr_reader :working_bike
 
   DEFAULT_CAPACITY = 20
 
@@ -17,7 +18,11 @@ class DockingStation
   end
 
   def available?
-    !@bikes.empty? && (@bikes.select {|bike| bike.is_working?}.any?)
+    @working_bike = @bikes.select do |bike|
+      bike.is_working?
+    end
+
+    !empty? && (@working_bike.length > 0)
   end
   def report_broken(bike)
     bike.condition = "bad"
@@ -36,5 +41,8 @@ class DockingStation
   end
   def full?
     @bikes.size < DEFAULT_CAPACITY
+  end
+  def empty?
+    @bikes.length == 0
   end
 end
