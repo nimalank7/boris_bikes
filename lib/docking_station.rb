@@ -17,7 +17,7 @@ class DockingStation
   end
 
   def available?
-    !@bikes.empty? && @bikes.select {|bike| bike.is_working?}.any?
+    !@bikes.empty? && (@bikes.select {|bike| bike.is_working?}.any?)
   end
   def report_broken(bike)
     bike.condition = "bad"
