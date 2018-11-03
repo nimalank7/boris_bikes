@@ -10,8 +10,11 @@ class DockingStation
     @bikes = []
     @capacity = capacity
   end
-  def release_bike
-    available? ? get_bike : (raise Exception.new("No bikes"))
+  def release_working_bike
+    available? ? get_working_bike : (raise Exception.new("No working bikes"))
+  end
+  def release_broken_bike
+    broken? ? get_broken_bike : (raise Exception.new("No broken bikes"))
   end
   def dock_bike(bike)
     full? ? @bikes << bike : (raise Exception.new("Dock is full"))
@@ -21,18 +24,33 @@ class DockingStation
     @working_bike = @bikes.select do |bike|
       bike.is_working?
     end
-
     !empty? && (@working_bike.length > 0)
+  end
+  def broken?
+    @broken_bike = @bikes.select do |bike|
+      bike.is_working? == false
+    end
+    !empty? && (@broken_bike.length > 0)
   end
   def report_broken(bike)
     bike.condition = "bad"
   end
 
   private
-  def get_bike
+  def get_working_bike
     returned_bike = nil
     @bikes.each_with_index do |bike, index|
       if bike.is_working?
+        returned_bike = @bikes.delete_at(index)
+        break
+      end
+    end
+    returned_bike
+  end
+  def get_broken_bike
+    returned_bike = nil
+    @bikes.each_with_index do |bike, index|
+      if !bike.is_working?
         returned_bike = @bikes.delete_at(index)
         break
       end
